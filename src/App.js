@@ -1,12 +1,14 @@
 import React,{useState, useEffect} from 'react';
 import './App.css';
 import axios from "axios";
-
 function App() {
-  const [data, setData] = useState([]);
+ const [data, setData] = useState([]);
 
   useEffect(()=>{
-    refreshFetchData()
+    async function fetchData(){
+      await refreshFetchData()
+    }
+    fetchData()
   },[])
 
   const refreshFetchData = async() =>{
@@ -18,15 +20,21 @@ function App() {
       console.log(error)
     }
   }
-  const {name:{first, last ,title}, email} = data.length > 0 && data[0]
+  
   return (
     <div className="App">
-      <div className='App_User'>
-        <p>Name: <span>{`${title} ${first} ${last}`}</span></p>
-        <p>Email: <span>{email}</span></p>
-      </div>
       <div>
-        <button onClick={refreshFetchData}>Refresh</button>
+        {data.map(ele=>{
+          return(
+            <>
+             <h3>{`${ele.name.title} ${ele.name.first} ${ele.name.last}`}</h3>
+             <p>{ele.email}</p>
+            </>
+          )
+        })}
+      </div>
+      <div >
+        <button onClick={refreshFetchData}>ReFresh</button>
       </div>
     </div>
   );
